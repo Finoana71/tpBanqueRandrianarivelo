@@ -4,6 +4,7 @@
  */
 package mg.itu.randrianarivelo.ejb;
 
+import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.ejb.Stateless;
 
 @DataSourceDefinition (
