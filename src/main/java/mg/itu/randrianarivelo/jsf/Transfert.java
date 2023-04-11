@@ -56,6 +56,6 @@ public class Transfert {
         CompteBancaire source = gest.findById(idSource);
         CompteBancaire destination = gest.findById(idDestination);
         gest.transferer(source, destination, montant);
-        return "/listeComptes";
+        return "/listeComptes?faces-redirect=true";
     }
 }
