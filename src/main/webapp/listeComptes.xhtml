@@ -22,21 +22,21 @@
                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
  
                         <p:column>
-                            <f:facet name="id">
-                                <h:outputText value="Id" />
+                            <f:facet name="header">
+                                <h:outputText value="Id"/>
                             </f:facet>
                             <h:outputText value="#{item.id}" />
                         </p:column>
                         
                         <p:column>
-                            <f:facet name="nom">
+                            <f:facet name="header">
                                 <h:outputText value="Nom" />
                             </f:facet>
                             <h:outputText value="#{item.nom}" />
                         </p:column>
 
                         <p:column>
-                            <f:facet name="solde">
+                            <f:facet name="header">
                                 <h:outputText value="Solde" />
                             </f:facet>
                             <h:outputText value="#{item.solde}" />
