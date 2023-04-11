@@ -9,6 +9,7 @@ import jakarta.inject.Named;
 import jakarta.enterprise.context.RequestScoped;
 import mg.itu.randrianarivelo.ejb.GestionnaireCompte;
 import mg.itu.randrianarivelo.entities.CompteBancaire;
+import mg.itu.randrianarivelo.jsf.util.Util;
 
 /**
  *
@@ -55,7 +56,23 @@ public class Transfert {
     public String transferer(){
         CompteBancaire source = gest.findById(idSource);
         CompteBancaire destination = gest.findById(idDestination);
+        boolean erreur = false;
+        if(source == null){
+            Util.messageErreur("Aucun compte avec cet id !", "Aucun compte avec cet id !", "form:source");
+            erreur = true;
+        }
+        else if(source.getSolde() < montant){
+            Util.messageErreur("Solde du compte source insuffisant !", "Solde du compte source insuffisant !", "form:source");
+            erreur = true;
+        }
+        if(destination == null){
+            Util.messageErreur("Aucun compte avec cet id !", "Aucun compte avec cet id !", "form:destination");
+            erreur = true;
+        }
+        if(erreur)
+            return null;
         gest.transferer(source, destination, montant);
+        Util.addFlashInfoMessage("Transfert d'une somme de " + montant + " correctement effectué du compte de " + source.getNom() + " vers " + destination.getNom());
         return "/listeComptes?faces-redirect=true";
     }
 }
