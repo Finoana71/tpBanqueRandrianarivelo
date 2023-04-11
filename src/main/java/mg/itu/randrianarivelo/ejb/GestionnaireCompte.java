@@ -54,4 +54,14 @@ public class GestionnaireCompte {
     public CompteBancaire findById(long id){
         return em.find(CompteBancaire.class, id);
     }
+    
+    public void deposer(CompteBancaire compte, int montant){
+        compte.deposer(montant);
+        update(compte);
+    }
+    
+    public void retirer(CompteBancaire compte, int montant){
+        compte.retirer(montant);
+        update(compte);
+    }
 }
