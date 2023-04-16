@@ -28,7 +28,7 @@ public class OperationBancaire implements Serializable {
     private LocalDateTime dateOperation;
   
     private int montant;
-                    
+                  
     public OperationBancaire() { }
      
     public OperationBancaire(String description, int montant) {
