@@ -5,6 +5,7 @@
 package mg.itu.randrianarivelo.jsf;
 
 import jakarta.ejb.EJB;
+import jakarta.ejb.EJBException;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIInput;
@@ -12,6 +13,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.validator.ValidatorException;
 import jakarta.inject.Named;
 import jakarta.faces.view.ViewScoped;
+import jakarta.persistence.OptimisticLockException;
 import java.io.Serializable;
 import mg.itu.randrianarivelo.ejb.GestionnaireCompte;
 import mg.itu.randrianarivelo.entities.CompteBancaire;
@@ -90,13 +92,30 @@ public class MouvementBean implements Serializable {
     }
   
     public String enregistrerMouvement() {
-        if (typeMouvement.equals("****")) {
-          gestionnaireCompte.deposer(compte, montant);
-        } else {
-          gestionnaireCompte.retirer(compte, montant);
+        try{
+            if (typeMouvement.equals("****")) {
+              gestionnaireCompte.deposer(compte, montant);
+            } else {
+              gestionnaireCompte.retirer(compte, montant);
+            }
+            Util.addFlashInfoMessage("Mouvement enregistré sur compte de " + compte.getNom());
+            return "listeComptes?faces-redirect=true";            
         }
-        Util.addFlashInfoMessage("Mouvement enregistré sur compte de " + compte.getNom());
-        return "listeComptes?faces-redirect=true";
-      }
+        catch(EJBException ex){
+            Throwable cause = ex.getCause();
+            if(cause != null){
+                if(cause instanceof OptimisticLockException){
+                  Util.messageErreur("Le compte de " + compte.getNom()
+                      + " a été modifié ou supprimé par un autre utilisateur !");                    
+                }
+                else
+                    Util.messageErreur(cause.getMessage());
+            }
+            else{
+                Util.messageErreur(ex.getMessage());
+            }
+            return null;
+        }
+    }
     
 }
